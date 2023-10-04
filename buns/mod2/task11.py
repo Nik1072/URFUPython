@@ -18,7 +18,7 @@ for check_number1 in numbers:
 print(flag)
 
 # # or a simpler option:
-# ...
+# ... уже потом забил и писал комментарии на русском. Ниже более своеобразный вариант решения
 # numbers = input()
 # flag = False
 # count_of_number_0 = 0
