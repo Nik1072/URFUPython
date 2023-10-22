@@ -1,23 +1,27 @@
-the_path_to_the_file = str(input('Введите полный путь до файла в котором будем подсчитывать статистику по буквам '))
+stats = []
+symbol_in_stats_Id = 0
 
-str_open = open(the_path_to_the_file, 'r')
-list_file = str_open.read()
-count_dict = {}
-count_letter = 0
-for letter in list_file:
-    if (letter.isalpha()):
-        x = count_dict.get(letter, 0)
-        count_dict[letter] = x + 1
-        count_letter += 1
-count_letter_dict = [(k, "{:8.6f}".format(count_dict[k] / count_letter)) for k in count_dict.keys()]
-str_open.close()
-count_letter_dict.sort(key=lambda x: x[1], reverse=True)
-print()
+the_path_to_the_file = str(input('Введите полный путь до файла в котором будем подсчитывать статистику '))
+file_open = open(the_path_to_the_file, 'r', encoding='utf-8')
+file_data = file_open.read()
+file_data = list(file_data)
+copy_file_data = file_data[:]
+for symbol_of_file_data in file_data:
+    if symbol_of_file_data.isalpha() and copy_file_data.count(symbol_of_file_data) != 0:
+        stats.append([symbol_of_file_data, copy_file_data.count(symbol_of_file_data)])
+        for _ in range(copy_file_data.count(symbol_of_file_data)):
+            copy_file_data.remove(symbol_of_file_data)
+file_open.close()
 
-the_path_to_the_endfile = str(input('Введите полный путь до файла в который занесём статистику '))
-my_file = open(the_path_to_the_endfile, "w+")
-for i in count_letter_dict:
-    my_file.write(i[0] + " " + i[1] + ' * 100%')
-    my_file.write('\n')
-    print(i[0] + " " + i[1] + ' * 100%')
-my_file.close()
+stats.sort(key = lambda x: x[1])
+
+the_path_to_the_endfile = str(input('Введите полный путь для предполагаемого файла, в который мы выведем статистику (программа сама создаст файл по данным пути) '))
+
+endfile_file = open(the_path_to_the_endfile, "w+")
+for stats_of_one_symbol in stats:
+    for _ in stats_of_one_symbol:
+        endfile_file.write(str(_))
+        endfile_file.write(' ')
+    endfile_file.write('\n')
+
+endfile_file.close()
